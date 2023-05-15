@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -7,39 +8,63 @@ public class ex03 {
         String term = "42";
         Scanner scanner = new Scanner(System.in);
         String weekLine = scanner.nextLine();
-        int[][] arr = new int[18][5];
-        while ((week <= 3) || (weekLine.equals(term))) {
-            if (!weekLine.equals("Week " + week))
+        long grade = 0;
+        while (week <= 18 && !weekLine.equals(term)) {
+            if (!weekLine.equals("Week " + week)) {
                 putIllegalArgument();
-            String str = scanner.nextLine();
-            arr[week] = parsStr(str.split(" "));
+            }
+            grade *= 10;
+            grade += getGrade(scanner);
             weekLine = scanner.nextLine();
             week++;
         }
-        for (int i = 1; i != week; i++)
-            vizualize(findMin(arr[i - 1]), i);
-    }
-
-
-    static int[] parsStr(String[] str) {
-        int[] ret = new int[5];
-        for (int i = 0; i != 5; i++) {
-            ret[i] = str[i].charAt(0) - '0';
+        week -= 1;
+        for (int i = 1; i <= week; i++) {
+            vizualize((grade / getPow(i + 1, week)), i);
         }
-        return (ret);
     }
-    static int findMin(int[] arr) {
-        int min = arr[0];
-        for (int i = 1; i != arr.length; i++) {
-            if (min < arr[i])
-                min = arr[i];
+
+    static long getGrade(Scanner scanner) {
+        long num = 0;
+        for (int i = 0; i < 5; i++) {
+            int tmp = scanner.nextInt();
+            if (tmp <= 0 || tmp >= 10)
+                putIllegalArgument();
+            num *= 10;
+            num += tmp;
+        }
+        scanner.nextLine();
+        return findMin(num);
+    }
+
+    static long findMin(long arr) {
+        long min = arr % 10;
+        int i = 0;
+        while (arr > 0) {
+            if ((arr % 10) < min)
+                min = arr % 10;
+            arr /= 10;
         }
         return (min);
     }
 
-    static void vizualize(int min, int week) {
+    static long getPow(int index, int week) {
+        int pow = 10;
+        if (index != week + 1) {
+            for (int i = week; i > index; i--)
+                pow *= 10;
+            return (pow);
+        }
+        else {
+            return (1);
+        }
+    }
+
+    static void vizualize(long min, int week) {
         System.out.print("Week " + week + " ");
-        for (int i = 1; i != min; i++)
+        if (week > 1)
+            min %= 10;
+        for (int i = 0; i < min; i++)
             System.out.print("=");
         System.out.println(">");
     }
