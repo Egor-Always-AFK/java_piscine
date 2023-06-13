@@ -1,51 +1,53 @@
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ex01 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int num = scanner.nextInt();
+        int steps = 0;
+        boolean isPrime = true;
+        int sqrt;
 
         if (num <= 1) {
-            err();
-        }
-        else {
-            int[] ret = sieve(num);
-            boolean bool;
-            if (ret[0] == 1)
-                bool = true;
-            else
-                bool = false;
-            System.out.print(bool + " ");
-            System.out.println(ret[1]);
-        }
-    }
-
-    static void err() {
-        System.err.println("theIllegalArgument");
-        System.exit(-1);
-    }
-    static int[] sieve(int num) {
-        boolean[] arr = new boolean[num];
-        Arrays.fill(arr, true);
-        int iter = 0;
-        arr[0] = false;
-        arr[1] = false;
-        for (int i = 2; i < arr.length; i++) {
-            if (arr[i]) {
-                iter++;
-                for (int j = i * i; j < num; j += i)
-                    arr[j] = false;
+            System.exit(puttIllegalArgument());
+        } else if (num == 2) {
+            System.out.println(isPrime + " " + 1);
+        } else {
+            sqrt = sqrt(num);
+            for (int i = 2; i <= sqrt + 1; i++) {
+                steps++;
+                if (num % i == 0) {
+                    isPrime = false;
+                    break;
+                }
             }
         }
-        if (arr[num - 1]) {
-            int[] ret = {1, iter};
-            return (ret);
+        System.out.println(isPrime + " " + steps);
+        System.exit(0);
+    }
+
+    private static int puttIllegalArgument() {
+        System.err.println("theIllegalArgument");
+        return (-1);
+    }
+
+    private static int sqrt(int num) {
+        long start = 1;
+        long end = num;
+        long ret = 0;
+        long mid;
+
+        while (start <= end) {
+            mid = (start + end) / 2;
+            if (mid * mid == num) {
+                return ((int) mid);
+            } else if (mid * mid < num) {
+                start = mid + 1;
+                ret = mid;
+            } else {
+                end = mid - 1;
+            }
         }
-        else {
-            int[] ret = {0, iter};
-            return (ret);
-        }
+        return (int) ret;
     }
 }

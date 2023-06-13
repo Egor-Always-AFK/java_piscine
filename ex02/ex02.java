@@ -9,8 +9,7 @@ public class ex02 {
         int num = scanner.nextInt();
         int coffeeRequest = 0;
         while (num != 42) {
-            int sum = digitsSum(num);
-            if (!sieve(sum)) {
+            if (numPrimeChecker(digitsSum(num))) {
                 coffeeRequest++;
             }
             num = scanner.nextInt();
@@ -18,26 +17,56 @@ public class ex02 {
         System.out.println("Count of coffee-request - " + coffeeRequest);
     }
 
-    static int digitsSum(int num) {
-        int sum = 0;
-        int tmp = num;
-        while (tmp != 0) {
-            sum += tmp % 10;
-            tmp /= 10;
-        }
-        return (sum);
-    }
-    static boolean sieve(int num) {
-        boolean[] arr = new boolean[num];
-        Arrays.fill(arr, true);
-        arr[0] = false;
-        arr[1] = false;
-        for (int i = 2; i < arr.length; i++) {
-            if (arr[i]) {
-                for (int j = i + i; j < num; j += i)
-                    arr[j] = false;
+    private static boolean numPrimeChecker(int num) {
+        int sqrt = 0;
+
+        if (num <= 1) {
+            System.exit(puttIllegalArgument());
+        } else if (num == 2) {
+            return (true);
+        } else {
+            sqrt = sqrt(num);
+            for (int i = 2; i <= sqrt + 1; i++) {
+                if (num % i == 0) {
+                    return (false);
+                }
             }
         }
-        return arr[num - 1];
+        return (true);
+    }
+
+    private static int digitsSum(int num) {
+        int result = 0;
+
+        while (num != 0) {
+            result += num % 10;
+            num /= 10;
+        }
+        return (result);
+    }
+
+    private static int puttIllegalArgument() {
+        System.err.println("theIllegalArgument");
+        return (-1);
+    }
+
+    private static int sqrt(int num) {
+        long start = 1;
+        long end = num;
+        long ret = 0;
+        long mid;
+
+        while (start <= end) {
+            mid = (start + end) / 2;
+            if (mid * mid == num) {
+                return ((int) mid);
+            } else if (mid * mid < num) {
+                start = mid + 1;
+                ret = mid;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return (int) ret;
     }
 }

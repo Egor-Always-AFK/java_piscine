@@ -11,7 +11,7 @@ public class ex03 {
         long grade = 0;
         while (week <= 18 && !weekLine.equals(term)) {
             if (!weekLine.equals("Week " + week)) {
-                putIllegalArgument();
+                System.exit(putIllegalArgument());
             }
             grade *= 10;
             grade += getGrade(scanner);
@@ -69,8 +69,8 @@ public class ex03 {
         System.out.println(">");
     }
 
-    static void putIllegalArgument() {
+    static int putIllegalArgument() {
         System.out.println("theIllegalArgument");
-        System.exit(-1);
+        return(-1);
     }
 }
